@@ -1,14 +1,14 @@
-# katalon-studio-sealights-plugin
+# Katalon Studio Sealight Plugin
 
 ## Purpose
-This plugin is for integration with Sealights to
+This plugin is for integration with Sealights to:
 - List of excluded test cases that has been analyzed by previous run to reduce the needed to run all test cases.
 - Report the test result back to feed for Sealights Test Analysis.
 
 - This plugin does not include installing Sealights agent or code instrument to collect test coverage.
 
 ## How to use
-1. Install the plugins via Katatan store []
+1. Install the plugin either manually or via Katalon store
 2. Setup plugin configuration
 
    ![sealights_configuration](./docs/images/sealights_configuration_ui.png)
@@ -20,59 +20,36 @@ This plugin is for integration with Sealights to
    - Test Stage: Name of the test stage.
    - Build Session Id: Session ID of configuration created.
    - Session Timeout (seconds): Test session timeout (by default: 14400).
-4. Create dynamic test suite.
-When creating dynamic test suite. The plugin will get the exclude test case from sealights and generate a list of test cases to run.
-5. Execute the created dynamic test suite with either one of two mode below:
-    + Inside Katalon Studio:
-    It should be only used in testing mode with testing environment do not run this in real environment as it could impact the Sealights Test Analysis for next run.
-    + In command-line mode execution
-    #### List Syntax Sealights
-    Default if you don't pass parameters. Then the default value will be taken from within `Katalon Studio` => `Project` => `Settings` => `Plugins` => `Sealights`
-    - `-sealightsUrl` : URL connect to sealights server (Optional).
-    - `-sealightsAgentToken`: Agent Token (Optional).
-    - `-sealightsLabId`:  Lab Id (Optional).
-    - `-sealightsTestStage`: Test Stage (Optional).
-    - `-sealightsBSId`: Build Session Id (Optional). 
-    - `-sealightsSessionTimeout`: Session Timeout (default value is 14400) (Optional).
+1. Create a test suite - Dynamic (v1.0.0+) or Static (v2.0.0+ plus [Sealights Test Listener](https://store.katalon.com/product/416/Sealights-Test-Listener))
+    - Create Dynamic test suite.
 
-    ** If optional value is not set, It will be default to UI configuration value if it is not set.
+        When using dynamic test suite, the plugin will get the excluded test cases from Sealights and generate a list of test cases to run.
 
-#### For examples
-```
-katalonc -noSplash -runMode=console -projectPath="C:\Users\Katalon Studio\Project\YourProject.prj" -retry=0 -testSuitePath="Test Suites/download" -executionProfile="default" -browserType="Chrome" --config -sealightsUrl="your sealights server" -sealightsAgentToken="your sealights agent token"
-```
+    - Create Static test suite
 
+        When using a static test suite, the plugin will be responsible for initiating the test session requesting the excluded tests, but you will need to also install the [Sealights Test Listener](https://store.katalon.com/product/416/Sealights-Test-Listener), as it will be responsible for skipping any excluded tests in the suite.
 
-## How to contribute
-### Build
-Requirements:
+2. Execute the test suite using either Katalon Studio or Katalon Runtime Engine (KRE):
+    + Using Katalon Studio
 
-- JDK 1.8
-- Maven 3.3+
+    + Using Katalon Runtime Engine (KRE)
 
-Build
+        When using KRE via the command line, you can use the following command line parameters to configure the Sealights plugin:
 
-`mvn clean package`
+        #### Sealights command line parameters
+        If you don't pass any parameters, then the default value will be taken from within `Katalon Studio` => `Project` => `Settings` => `Plugins` => `Sealights`
+      - `-sealightsUrl` : URL connect to sealights server (Optional).
+      - `-sealightsAgentToken`: Agent Token (Optional).
+      - `-sealightsLabId`:  Lab Id (Optional).
+      - `-sealightsTestStage`: Test Stage (Optional).
+      - `-sealightsBSId`: Build Session Id (Optional). 
+      - `-sealightsSessionTimeout`: Session Timeout (default value is 14400) (Optional).
+      - `-sealightsEnableListener`: Enable the [Sealights Test Listener](https://store.katalon.com/product/416/Sealights-Test-Listener) (Optional).
 
-### How to test plugin jar in Katalon Studio
+        ** If optional value is not set, It will be default to UI configuration value if it is not set.
 
-- Checkout or get a build of branch `staging-plugin` of KS
-- After KS opens, please click on `Plugin` menu, select `Install Plugin` and choose generated jar file.
-- If you want to reload this plugin, please click on `Plugin` menu, select `Uninstall Plugin` then select `Install Plugin` again. 
-
-
-## Companion products
-
-### Katalon TestOps
-
-[Katalon TestOps](https://analytics.katalon.com) is a web-based application that provides dynamic perspectives and an insightful look at your automation testing data. You can leverage your automation testing data by transforming and visualizing your data; analyzing test results; seamlessly integrating with such tools as Katalon Studio and Jira; maximizing the testing capacity with remote execution.
-
-* Read our [documentation](https://docs.katalon.com/katalon-analytics/docs/overview.html).
-* Ask a question on [Forum](https://forum.katalon.com/categories/katalon-analytics).
-* Request a new feature on [GitHub](CONTRIBUTING.md).
-* Vote for [Popular Feature Requests](https://github.com/katalon-analytics/katalon-analytics/issues?q=is%3Aopen+is%3Aissue+label%3Afeature-request+sort%3Areactions-%2B1-desc).
-* File a bug in [GitHub Issues](https://github.com/katalon-analytics/katalon-analytics/issues).
-
-### Katalon Studio
-[Katalon Studio](https://www.katalon.com) is a free and complete automation testing solution for Web, Mobile, and API testing with modern methodologies (Data-Driven Testing, TDD/BDD, Page Object Model, etc.) as well as advanced integration (JIRA, qTest, Slack, CI, Katalon TestOps, etc.). Learn more about [Katalon Studio features](https://www.katalon.com/features/).
+        #### For example
+        ```
+        katalonc -noSplash -runMode=console -projectPath="C:\Users\Katalon Studio\Project\YourProject.prj" -retry=0 -testSuitePath="Test Suites/download" -executionProfile="default" -browserType="Chrome" --config -sealightsUrl="your sealights server" -sealightsAgentToken="your sealights agent token"
+        ```
 
